@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112.64" fill="#8B6914"/>
+  <rect x="76.8" y="76.8" width="358.4" height="358.4" rx="56.32" fill="#C4972A" opacity="0.3"/>
+
+  <!-- Kitchen cabinet silhouette -->
+  <rect x="102.4" y="128" width="307.2" height="40.96" rx="3" fill="white" opacity="0.9"/>
+  <rect x="102.4" y="184.32" width="143.36" height="179.2" rx="3" fill="white" opacity="0.85"/>
+  <rect x="266.24" y="184.32" width="143.36" height="179.2" rx="3" fill="white" opacity="0.85"/>
+
+  <!-- Door handles -->
+  <circle cx="161.28" cy="273.92" r="12.8" fill="#8B6914"/>
+  <circle cx="350.72" cy="273.92" r="12.8" fill="#8B6914"/>
+
+  <!-- Counter top line -->
+  <rect x="92.16" y="378.88" width="327.68" height="20.48" rx="2" fill="white" opacity="0.7"/>
+
+  <!-- IA spark -->
+  <text x="368.64" y="143.36" font-size="76.8" fill="#FFD700">✦</text>
+</svg>

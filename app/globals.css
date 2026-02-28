@@ -1,0 +1,124 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8f5f0;
+  --foreground: #1a1a1a;
+  --primary: #8B6914;
+  --primary-light: #C4972A;
+  --accent: #2D5A3D;
+  --surface: #ffffff;
+  --border: #e5ddd0;
+  --muted: #8a7d6b;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+.gradient-wood {
+  background: linear-gradient(135deg, #8B6914 0%, #C4972A 50%, #8B6914 100%);
+}
+
+.gradient-hero {
+  background: linear-gradient(135deg, #1a0f00 0%, #2D1A00 40%, #1a2d1a 100%);
+}
+
+.card-shadow {
+  box-shadow: 0 4px 24px rgba(139, 105, 20, 0.1);
+}
+
+.card-hover {
+  transition: all 0.3s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 32px rgba(139, 105, 20, 0.2);
+}
+
+.upload-zone {
+  border: 2px dashed #C4972A;
+  background: rgba(196, 151, 42, 0.05);
+  transition: all 0.3s ease;
+}
+.upload-zone:hover, .upload-zone.drag-over {
+  border-color: #8B6914;
+  background: rgba(139, 105, 20, 0.1);
+}
+
+.step-active {
+  background: linear-gradient(135deg, #8B6914, #C4972A);
+  color: white;
+}
+.step-done {
+  background: #2D5A3D;
+  color: white;
+}
+.step-pending {
+  background: #e5ddd0;
+  color: #8a7d6b;
+}
+
+.result-card {
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.12);
+}
+
+.loader-bar {
+  width: 200px;
+  height: 4px;
+  background: #e5ddd0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #8B6914, #C4972A, #8B6914);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite linear;
+  border-radius: 2px;
+  width: 60%;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.plan-canvas-container {
+  background: #fafafa;
+  border: 1px solid #e5ddd0;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #f8f5f0; }
+::-webkit-scrollbar-thumb { background: #C4972A; border-radius: 3px; }
+
+/* iOS safe areas */
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+/* Remove tap highlight on iOS */
+* { -webkit-tap-highlight-color: transparent; }
+
+/* Touch manipulation for all interactive elements */
+button, a, input, select, textarea {
+  touch-action: manipulation;
+}
+
+/* iOS momentum scrolling */
+.scroll-container {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+/* Safe area padding for iPhone notch / home indicator */
+.pb-safe { padding-bottom: env(safe-area-inset-bottom, 16px); }
