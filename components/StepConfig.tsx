@@ -61,7 +61,6 @@ export default function StepConfig({ photoPreview, onConfigDone, onBack }: Props
       dishwasher: true,
       microwave: false,
       hood: true,
-      wineRack: false,
     },
     additionalPrompt: "",
     budget: "standard",
@@ -275,7 +274,6 @@ export default function StepConfig({ photoPreview, onConfigDone, onBack }: Props
                   dishwasher: "Lave-vaisselle",
                   microwave: "Micro-ondes",
                   hood: "Hotte",
-                  wineRack: "Cave à vins",
                 };
                 return (
                   <button

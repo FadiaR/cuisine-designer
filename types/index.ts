@@ -25,7 +25,6 @@ export interface KitchenConfig {
     dishwasher: boolean;
     microwave: boolean;
     hood: boolean;
-    wineRack: boolean;
   };
   additionalPrompt: string;
   budget: "economique" | "standard" | "premium";

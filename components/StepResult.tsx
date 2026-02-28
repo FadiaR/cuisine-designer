@@ -71,7 +71,7 @@ export default function StepResult({
     .map(([k]) => {
       const labels: Record<string, string> = {
         fridge: "Réfrigérateur", oven: "Four encastré", dishwasher: "Lave-vaisselle",
-        microwave: "Micro-ondes", hood: "Hotte", wineRack: "Cave à vins",
+        microwave: "Micro-ondes", hood: "Hotte",
       };
       return labels[k];
     });
