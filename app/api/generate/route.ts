@@ -60,7 +60,7 @@ function buildPrompt(config: KitchenConfig): string {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { imageBase64, config }: { imageBase64: string; config: KitchenConfig } = body;
+    const { config }: { config: KitchenConfig } = body;
 
     const apiToken = process.env.REPLICATE_API_TOKEN;
     if (!apiToken) {
@@ -74,27 +74,15 @@ export async function POST(req: NextRequest) {
 
     const prompt = buildPrompt(config);
 
-    // Convert base64 to data URI if needed
-    const imageUri = imageBase64.startsWith("data:") ? imageBase64 : `data:image/jpeg;base64,${imageBase64}`;
-
-    // Use img2img with controlnet for room transformation
-    // Model: jagilley/controlnet-hough (room structure preservation)
-    // Fallback: stability-ai/stable-diffusion-img2img
     const output = await replicate.run(
-      "stability-ai/stable-diffusion-img2img:15a3689ee13b0d2616e98820eca31d4af4b51808982614f7e9a01ad9d800b426",
+      "black-forest-labs/flux-schnell",
       {
         input: {
-          image: imageUri,
           prompt: prompt,
-          negative_prompt:
-            "blurry, low quality, distorted, unrealistic, cartoon, sketch, bad proportions, ugly, dark, messy",
-          num_inference_steps: 30,
-          guidance_scale: 7.5,
-          prompt_strength: 0.65,
-          width: 768,
-          height: 512,
           num_outputs: 3,
-          scheduler: "DPMSolverMultistep",
+          aspect_ratio: "16:9",
+          output_format: "webp",
+          output_quality: 90,
         },
       }
     );
@@ -102,7 +90,10 @@ export async function POST(req: NextRequest) {
     const images = Array.isArray(output) ? output : [output];
 
     return NextResponse.json({
-      images: images.map((url: string, i: number) => ({ url, variant: i + 1 })),
+      images: images.map((url: unknown, i: number) => ({
+        url: String(url),
+        variant: i + 1,
+      })),
       prompt,
     });
   } catch (err: unknown) {
