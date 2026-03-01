@@ -1,13 +1,21 @@
 "use client";
 
 import { useState, useRef, DragEvent } from "react";
-import { Camera, ImageIcon, AlertCircle, FolderOpen } from "lucide-react";
+import { Camera, ImageIcon, AlertCircle, FolderOpen, UtensilsCrossed, Shirt, Tv } from "lucide-react";
+import { ProjectType } from "@/types";
 
 interface Props {
-  onPhotoUploaded: (file: File, preview: string) => void;
+  onPhotoUploaded: (file: File, preview: string, projectType: ProjectType) => void;
 }
 
+const PROJECT_TYPES: { value: ProjectType; label: string; desc: string; icon: React.ReactNode }[] = [
+  { value: "cuisine", label: "Cuisine", desc: "Cuisines sur-mesure", icon: <UtensilsCrossed size={22} /> },
+  { value: "dressing", label: "Dressing", desc: "Dressings & placards", icon: <Shirt size={22} /> },
+  { value: "tvUnit", label: "Meuble TV", desc: "Meubles TV & bibliothèques", icon: <Tv size={22} /> },
+];
+
 export default function StepUpload({ onPhotoUploaded }: Props) {
+  const [projectType, setProjectType] = useState<ProjectType>("cuisine");
   const [isDragging, setIsDragging] = useState(false);
   const [error, setError] = useState("");
   const cameraInputRef = useRef<HTMLInputElement>(null);
@@ -25,7 +33,7 @@ export default function StepUpload({ onPhotoUploaded }: Props) {
     }
     const reader = new FileReader();
     reader.onload = (e) => {
-      onPhotoUploaded(file, e.target?.result as string);
+      onPhotoUploaded(file, e.target?.result as string, projectType);
     };
     reader.readAsDataURL(file);
   };
@@ -39,8 +47,38 @@ export default function StepUpload({ onPhotoUploaded }: Props) {
 
   return (
     <div className="max-w-lg mx-auto">
-      <div className="text-center mb-6">
-        <h2 className="text-xl font-bold mb-1">Photo de la pièce</h2>
+      {/* Project type selector */}
+      <div className="mb-6">
+        <h2 className="text-xl font-bold mb-1 text-center">Quel projet souhaitez-vous créer ?</h2>
+        <p className="text-sm text-center mb-4" style={{ color: "var(--muted)" }}>
+          Choisissez le type de meuble à concevoir
+        </p>
+        <div className="grid grid-cols-3 gap-3">
+          {PROJECT_TYPES.map((pt) => (
+            <button
+              key={pt.value}
+              onClick={() => setProjectType(pt.value)}
+              className="flex flex-col items-center gap-2 p-4 rounded-2xl border-2 transition-all"
+              style={{
+                borderColor: projectType === pt.value ? "var(--primary)" : "var(--border)",
+                background: projectType === pt.value ? "rgba(139, 105, 20, 0.08)" : "var(--surface)",
+                color: projectType === pt.value ? "var(--primary)" : "var(--foreground)",
+              }}
+            >
+              <span style={{ color: projectType === pt.value ? "var(--primary)" : "var(--muted)" }}>
+                {pt.icon}
+              </span>
+              <div className="text-center">
+                <p className="font-semibold text-sm">{pt.label}</p>
+                <p className="text-xs mt-0.5" style={{ color: "var(--muted)" }}>{pt.desc}</p>
+              </div>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="text-center mb-4">
+        <h3 className="text-base font-semibold mb-1">Photo de la pièce</h3>
         <p className="text-sm" style={{ color: "var(--muted)" }}>
           Prenez une photo ou importez depuis votre galerie
         </p>

@@ -5,25 +5,39 @@ import Header from "@/components/Header";
 import StepIndicator from "@/components/StepIndicator";
 import StepUpload from "@/components/StepUpload";
 import StepConfig from "@/components/StepConfig";
+import StepConfigDressing from "@/components/StepConfigDressing";
+import StepConfigTvUnit from "@/components/StepConfigTvUnit";
 import StepGenerate from "@/components/StepGenerate";
 import StepResult from "@/components/StepResult";
-import { KitchenConfig, ProjectData } from "@/types";
+import { ProjectType, KitchenConfig, DressingConfig, TvUnitConfig, UnifiedConfig, ProjectData } from "@/types";
 
 export default function Home() {
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string>("");
-  const [kitchenConfig, setKitchenConfig] = useState<KitchenConfig | null>(null);
+  const [projectType, setProjectType] = useState<ProjectType>("cuisine");
+  const [unifiedConfig, setUnifiedConfig] = useState<UnifiedConfig | null>(null);
   const [projectData, setProjectData] = useState<ProjectData | null>(null);
 
-  const handlePhotoUploaded = (file: File, preview: string) => {
+  const handlePhotoUploaded = (file: File, preview: string, type: ProjectType) => {
     setPhotoFile(file);
     setPhotoPreview(preview);
+    setProjectType(type);
     setStep(2);
   };
 
-  const handleConfigDone = (config: KitchenConfig) => {
-    setKitchenConfig(config);
+  const handleKitchenConfigDone = (config: KitchenConfig) => {
+    setUnifiedConfig({ type: "cuisine", data: config });
+    setStep(3);
+  };
+
+  const handleDressingConfigDone = (config: DressingConfig) => {
+    setUnifiedConfig({ type: "dressing", data: config });
+    setStep(3);
+  };
+
+  const handleTvUnitConfigDone = (config: TvUnitConfig) => {
+    setUnifiedConfig({ type: "tvUnit", data: config });
     setStep(3);
   };
 
@@ -36,7 +50,7 @@ export default function Home() {
     setStep(1);
     setPhotoFile(null);
     setPhotoPreview("");
-    setKitchenConfig(null);
+    setUnifiedConfig(null);
     setProjectData(null);
   };
 
@@ -53,26 +67,40 @@ export default function Home() {
           {step === 1 && (
             <StepUpload onPhotoUploaded={handlePhotoUploaded} />
           )}
-          {step === 2 && (
+          {step === 2 && projectType === "cuisine" && (
             <StepConfig
               photoPreview={photoPreview}
-              onConfigDone={handleConfigDone}
+              onConfigDone={handleKitchenConfigDone}
               onBack={() => setStep(1)}
             />
           )}
-          {step === 3 && photoFile && kitchenConfig && (
+          {step === 2 && projectType === "dressing" && (
+            <StepConfigDressing
+              photoPreview={photoPreview}
+              onConfigDone={handleDressingConfigDone}
+              onBack={() => setStep(1)}
+            />
+          )}
+          {step === 2 && projectType === "tvUnit" && (
+            <StepConfigTvUnit
+              photoPreview={photoPreview}
+              onConfigDone={handleTvUnitConfigDone}
+              onBack={() => setStep(1)}
+            />
+          )}
+          {step === 3 && photoFile && unifiedConfig && (
             <StepGenerate
               photoFile={photoFile}
               photoPreview={photoPreview}
-              kitchenConfig={kitchenConfig}
+              unifiedConfig={unifiedConfig}
               onGenerationDone={handleGenerationDone}
               onBack={() => setStep(2)}
             />
           )}
-          {step === 4 && projectData && kitchenConfig && (
+          {step === 4 && projectData && unifiedConfig && (
             <StepResult
               projectData={projectData}
-              kitchenConfig={kitchenConfig}
+              unifiedConfig={unifiedConfig}
               photoPreview={photoPreview}
               onReset={handleReset}
               onRegenerate={() => {
