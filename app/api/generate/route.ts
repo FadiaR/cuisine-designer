@@ -37,6 +37,8 @@ function buildPrompt(config: KitchenConfig): string {
   if (config.appliances.dishwasher) appliances.push("dishwasher");
   if (config.appliances.microwave) appliances.push("microwave");
   if (config.appliances.hood) appliances.push("range hood");
+  if (config.appliances.dressing) appliances.push("built-in wardrobe dressing");
+  if (config.appliances.tvUnit) appliances.push("TV wall unit furniture");
 
   let prompt =
     `Interior design photo, ${layoutLabels[config.layout]} custom kitchen, ` +

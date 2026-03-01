@@ -61,6 +61,8 @@ export default function StepConfig({ photoPreview, onConfigDone, onBack }: Props
       dishwasher: true,
       microwave: false,
       hood: true,
+      dressing: false,
+      tvUnit: false,
     },
     additionalPrompt: "",
     budget: "standard",
@@ -274,6 +276,8 @@ export default function StepConfig({ photoPreview, onConfigDone, onBack }: Props
                   dishwasher: "Lave-vaisselle",
                   microwave: "Micro-ondes",
                   hood: "Hotte",
+                  dressing: "Dressing",
+                  tvUnit: "Meuble TV",
                 };
                 return (
                   <button

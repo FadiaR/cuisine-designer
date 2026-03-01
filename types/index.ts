@@ -25,6 +25,8 @@ export interface KitchenConfig {
     dishwasher: boolean;
     microwave: boolean;
     hood: boolean;
+    dressing: boolean;
+    tvUnit: boolean;
   };
   additionalPrompt: string;
   budget: "economique" | "standard" | "premium";
