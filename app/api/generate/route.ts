@@ -130,9 +130,9 @@ export async function POST(req: NextRequest) {
     const replicate = new Replicate({ auth: apiToken });
     const prompt = buildPrompt(unifiedConfig as UnifiedConfig);
 
-    // Générer 3 variantes en séquentiel pour éviter le rate limit
     const images = [];
     for (let i = 0; i < 3; i++) {
+      if (i > 0) await new Promise((r) => setTimeout(r, 10000));
       const output = await replicate.run("black-forest-labs/flux-dev", {
         input: {
           prompt,
