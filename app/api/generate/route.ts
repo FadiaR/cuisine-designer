@@ -130,29 +130,24 @@ export async function POST(req: NextRequest) {
     const replicate = new Replicate({ auth: apiToken });
     const prompt = buildPrompt(unifiedConfig as UnifiedConfig);
 
-    // 3 variantes en parallèle, mode image-to-image
-    // prompt_strength 0.75 = conserve murs/sol/lumière, modifie les meubles
-    const runs = await Promise.all(
-      [0, 1, 2].map(() =>
-        replicate.run("black-forest-labs/flux-dev", {
-          input: {
-            prompt,
-            image: imageBase64,
-            prompt_strength: 0.75,
-            num_outputs: 1,
-            aspect_ratio: "16:9",
-            output_format: "webp",
-            output_quality: 90,
-            num_inference_steps: 28,
-          },
-        })
-      )
-    );
-
-    const images = runs.map((output, i) => {
+    // Générer 3 variantes en séquentiel pour éviter le rate limit
+    const images = [];
+    for (let i = 0; i < 3; i++) {
+      const output = await replicate.run("black-forest-labs/flux-dev", {
+        input: {
+          prompt,
+          image: imageBase64,
+          prompt_strength: 0.75,
+          num_outputs: 1,
+          aspect_ratio: "16:9",
+          output_format: "webp",
+          output_quality: 90,
+          num_inference_steps: 28,
+        },
+      });
       const arr = Array.isArray(output) ? output : [output];
-      return { url: String(arr[0]), variant: i + 1 };
-    });
+      images.push({ url: String(arr[0]), variant: i + 1 });
+    }
 
     return NextResponse.json({ images, prompt });
   } catch (err: unknown) {
